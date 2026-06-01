@@ -71,6 +71,89 @@ Performed initial analysis to understand dataset structure and quality:
 * To ensure accurate analysis, tracks were aggregated where necessary and artist names were combined
 * Data cleaning was performed by removing invalid records (e.g., duration = 0)
 
+## Featured SQL Queries
+
+The following queries highlight some of the key SQL techniques used throughout the project, including aggregations, data transformation, Common Table Expressions (CTEs), and window functions.
+
+### Top 10 Most Liked Tracks
+
+Identifies the tracks with the highest audience engagement while accounting for artist collaborations.
+
+```sql
+select track,
+string_agg(artist,', ') as artists,
+max(likes) as likes
+from spotify 
+group by track
+order by likes desc limit 10;
+```
+
+---
+
+### Tracks Performing Well on Both Spotify and YouTube
+
+Finds tracks that achieved strong performance across both streaming platforms.
+
+```sql
+select track,
+string_agg(distinct artist,', ') as artists,
+max(stream) as stream,
+max(views) as views 
+from spotify where stream>500000000 and views>500000000
+group by track
+order by stream desc;
+```
+
+---
+
+### Top 3 Most Viewed Tracks per Artist
+
+Uses a window function to rank tracks by views within each artist's catalog.
+
+```sql
+with ranking_artist
+as
+(select artist, track, 
+sum(views) as total_views,
+dense_rank() over(partition by artist order by sum(views) desc) as rank
+from spotify
+group by 1,2
+order by 1,3 desc)
+select * from ranking_artist where rank<=3;
+```
+
+---
+
+### Energy Variation Across Albums
+
+Uses a Common Table Expression (CTE) to compare the range of energy levels within albums.
+
+```sql
+with cte
+as
+(select album,
+max(energy) as highest_energy,
+min(energy) as lowest_energy
+from spotify
+group by 1)
+select album, highest_energy-lowest_energy as energy_diff 
+from cte order by 2 desc;
+```
+
+---
+
+### Average Danceability by Album
+
+Analyzes how danceable tracks are on average across different albums.
+
+```sql
+SELECT album,
+       AVG(danceability) AS avg_danceability
+FROM spotify
+GROUP BY album
+ORDER BY avg_danceability DESC;
+```
+
 ## Key Insights
 
 * A small number of tracks dominate total streams, indicating a skewed popularity distribution
