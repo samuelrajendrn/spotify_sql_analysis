@@ -147,11 +147,8 @@ from cte order by 2 desc;
 Analyzes how danceable tracks are on average across different albums.
 
 ```sql
-SELECT album,
-       AVG(danceability) AS avg_danceability
-FROM spotify
-GROUP BY album
-ORDER BY avg_danceability DESC;
+select album, avg(danceability) as avg_danceability from spotify
+group by album order by avg_danceability desc;
 ```
 
 ## Key Insights
