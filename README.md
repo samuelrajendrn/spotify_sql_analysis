@@ -65,12 +65,6 @@ Performed initial analysis to understand dataset structure and quality:
 * Applied **CTEs (Common Table Expressions)** for advanced calculations
 * Measured variation in energy levels across albums
 
-## Data Considerations
-
-* Some tracks appear multiple times due to **artist collaborations**
-* To ensure accurate analysis, tracks were aggregated where necessary and artist names were combined
-* Data cleaning was performed by removing invalid records (e.g., duration = 0)
-
 ## Featured SQL Queries
 
 The following queries highlight some of the key SQL techniques used throughout the project, including aggregations, data transformation, Common Table Expressions (CTEs), and window functions.
@@ -150,6 +144,34 @@ Analyzes how danceable tracks are on average across different albums.
 select album, avg(danceability) as avg_danceability from spotify
 group by album order by avg_danceability desc;
 ```
+
+## Project Screenshots
+
+### Dataset Preview
+
+![Dataset Preview](screenshots/spotify_preview.png)
+
+### Query 9: Top 10 Most Liked Tracks
+
+![Top Liked Tracks](screenshots/top_liked_tracks.png)
+
+### Query 8: Album Popularity Analysis
+
+![Album Popularity Analysis](screenshots/album_views.png)
+
+### Query 12: Average Danceability by Album
+
+![Danceability Analysis](screenshots/danceability_analysis.png)
+
+### Query 15: Top 3 Most Viewed Tracks per Artist
+
+![Top Tracks Per Artist](screenshots/top_tracks_per_artist.png)
+
+## Data Considerations
+
+* Some tracks appear multiple times due to **artist collaborations**
+* To ensure accurate analysis, tracks were aggregated where necessary and artist names were combined
+* Data cleaning was performed by removing invalid records (e.g., duration = 0)
 
 ## Key Insights
 
