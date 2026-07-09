@@ -123,7 +123,7 @@ group by album order by total_views desc;
 -- 9. Top 10 most liked tracks
 
 select track,
-string_agg(artist,', ') as artists,
+string_agg(distinct artist,', ') as artists,
 max(likes) as likes
 from spotify 
 group by track
